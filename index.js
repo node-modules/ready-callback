@@ -24,8 +24,8 @@ module.exports = function(app) {
 /*
   Create a async task
 
-  id: unique id for one service
-  isWeakDep:  ,defalt: false
+  id: unique id for one task
+  isWeakDep: whether it's a weak dependency, default: false
 */
 
 function async(id, isWeakDep) {
