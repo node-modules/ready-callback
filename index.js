@@ -14,7 +14,7 @@ module.exports = function(app) {
 
   setImmediate(function () {
     // 如果没有任何任务, 则触发 ready
-    if (!app.readyCache) {
+    if (!app._readyCache) {
       debug('Fire callback directly');
       app.ready(true);
     }
@@ -37,25 +37,28 @@ function async(id, isWeakDep) {
   }
   isWeakDep = isWeakDep === true;
 
-  self.readyCache = self.readyCache || {};
+  self._readyCache = self._readyCache || {};
 
-  if (self.readyCache[id]) {
+  if (self._readyCache[id]) {
     throw new Error('Can not register id `' + id + '` twice');
   }
 
   debug('Register task id %s, isWeakDep %s', id, isWeakDep);
-  var endTask = self.readyCache[id] = once(function(err) {
+  var endTask = self._readyCache[id] = once(function(err) {
+    if (self._readyError === true) return;
+
     // fire callback after all register
     setImmediate(function() {
       if (err && !isWeakDep) {
+        self._readyError = true;
         debug('Throw error task id %s, error %s', id, err);
         return self.emit('error', err);
       }
 
       debug('End task id %s, error %s', id, err);
-      delete self.readyCache[id];
+      delete self._readyCache[id];
 
-      if (Object.keys(self.readyCache).length === 0) {
+      if (Object.keys(self._readyCache).length === 0) {
         debug('Fire callback async');
         self.ready(true);
       }
