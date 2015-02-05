@@ -44,7 +44,7 @@ function async(id, isWeakDep) {
   }
 
   debug('Register task id %s, isWeakDep %s', id, isWeakDep);
-  var endTask = self.readyCache[id] = function(err) {
+  var endTask = self.readyCache[id] = once(function(err) {
     // fire callback after all register
     setImmediate(function() {
       if (err && !isWeakDep) {
@@ -60,7 +60,16 @@ function async(id, isWeakDep) {
         self.ready(true);
       }
     });
-  };
+  });
 
   return endTask;
+}
+
+function once(fn) {
+  var isCalled = false;
+  return function(err) {
+    if (isCalled) return;
+    isCalled = true;
+    fn(err);
+  };
 }

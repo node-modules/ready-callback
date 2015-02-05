@@ -134,6 +134,23 @@ describe('koa-ready', function() {
     }, 20);
   });
 
+  it.only('should fire endTask only once', function(done) {
+    var spyError = spy();
+    var endA = app.async('a');
+    app.on('error', spyError);
+
+    setTimeout(function() {
+      var err = new Error('error');
+      endA(err);
+      endA(err);
+    }, 1);
+
+    setTimeout(function() {
+      spyError.callCount.should.eql(1);
+      done();
+    }, 10);
+  });
+
   it('should error when no argument to async', function() {
     (function() {
       app.async();
