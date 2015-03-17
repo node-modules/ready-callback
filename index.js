@@ -60,6 +60,11 @@ function async(id, isWeakDep) {
       debug('End task id %s, error %s', id, err);
       cache.splice(cache.indexOf(id), 1);
 
+      self.emit('ready_stat', {
+        id: id,
+        remain: cache.slice()
+      });
+
       if (cache.length === 0) {
         debug('Fire callback async');
         self.ready(true);

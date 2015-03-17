@@ -159,4 +159,36 @@ describe('koa-ready', function() {
   it('should return when no argument', function() {
     ready();
   });
+
+  it('should emit ready_stat when every task end', function(done) {
+    var data = [];
+    app.on('ready_stat', function(e) {
+      data.push(e);
+    });
+    var endA = app.async('a');
+    var endB = app.async('b');
+    var endC = app.async('c');
+    var endD = app.async('d');
+    setTimeout(endA, 1);
+    setTimeout(endB, 80);
+    setTimeout(endC, 10);
+    setTimeout(endD, 50);
+
+    setTimeout(function() {
+      data.should.eql([{
+        id: 'a',
+        remain: ['b', 'c', 'd']
+      }, {
+        id: 'c',
+        remain: ['b', 'd']
+      }, {
+        id: 'd',
+        remain: ['b']
+      }, {
+        id: 'b',
+        remain: []
+      }]);
+      done();
+    }, 100);
+  });
 });
