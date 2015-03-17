@@ -1,3 +1,10 @@
+## 0.2.0 / 2015-03-17
+
+- chore: add appveyor and use npm scrips
+- feat: emit `ready_stat` when every task end
+- refactor: _readyCache use array instead of object
+- improve: testcase
+
 ## 0.1.1 / 2015-02-05
 
 - fix: do not fire endTask after throw error

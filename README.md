@@ -48,6 +48,15 @@ app.on('error', function(err) {
 });
 ```
 
+Get data every task end
+
+```
+app.on('ready_stat', function(data) {
+  console.log(data.id); // id of the ended task 
+  console.log(data.remain); // tasks waiting to be ended 
+});
+```
+
 ## LISENCE
 
 Copyright (c) 2015 popomore. Licensed under the MIT license.
