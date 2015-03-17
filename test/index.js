@@ -138,7 +138,7 @@ describe('koa-ready', function() {
     setTimeout(function() {
       spyError.callCount.should.eql(1);
       spyReady.callCount.should.eql(0);
-      Object.keys(app._readyCache).should.eql(['a', 'b']);
+      app._readyCache.should.eql(['a', 'b']);
       done();
     }, 20);
   });

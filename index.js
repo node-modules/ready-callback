@@ -37,14 +37,16 @@ function async(id, isWeakDep) {
   }
   isWeakDep = isWeakDep === true;
 
-  self._readyCache = self._readyCache || {};
+  var cache = self._readyCache = self._readyCache || [];
 
-  if (self._readyCache[id]) {
+  if (cache.indexOf(id) > -1) {
     throw new Error('Can not register id `' + id + '` twice');
   }
 
   debug('Register task id %s, isWeakDep %s', id, isWeakDep);
-  var endTask = self._readyCache[id] = once(function(err) {
+  cache.push(id);
+
+  return once(function(err) {
     if (self._readyError === true) return;
 
     // fire callback after all register
@@ -56,16 +58,14 @@ function async(id, isWeakDep) {
       }
 
       debug('End task id %s, error %s', id, err);
-      delete self._readyCache[id];
+      cache.splice(cache.indexOf(id), 1);
 
-      if (Object.keys(self._readyCache).length === 0) {
+      if (cache.length === 0) {
         debug('Fire callback async');
         self.ready(true);
       }
     });
   });
-
-  return endTask;
 }
 
 function once(fn) {
@@ -76,3 +76,4 @@ function once(fn) {
     fn(err);
   };
 }
+
