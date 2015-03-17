@@ -29,6 +29,10 @@
   "author": "popomore <sakura9515@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "make test"
+    "lint": "jshint .",
+    "test": "_mocha -R spec -t 20000",
+    "cov": "jshint . && node --harmony node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R spec -t 20000",
+    "coveralls": "cat ./coverage/lcov.info | coveralls",
+    "autod": "autod -e test/fixtures -f ~ -w"
   }
 }
