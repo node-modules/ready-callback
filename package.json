@@ -23,9 +23,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/popomore/koa-ready"
+    "url": "https://github.com/koajs/koa-ready"
   },
-  "homepage": "https://github.com/popomore/koa-ready",
+  "homepage": "https://github.com/koajs/koa-ready",
   "author": "popomore <sakura9515@gmail.com>",
   "license": "MIT",
   "scripts": {
