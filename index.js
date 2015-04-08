@@ -6,6 +6,9 @@ var ready = require('ready');
 module.exports = function(app) {
   if (!app) return;
 
+  // unique ready id for app
+  app._ready_hash_id = app._ready_hash_id || Date.now();
+
   // inject async method
   app.async = async;
 
@@ -15,7 +18,7 @@ module.exports = function(app) {
   setImmediate(function () {
     // 如果没有任何任务, 则触发 ready
     if (!app._readyCache) {
-      debug('Fire callback directly');
+      debug('[%s] Fire callback directly', app._ready_hash_id);
       app.ready(true);
     }
   });
@@ -38,12 +41,13 @@ function async(id, isWeakDep) {
   isWeakDep = isWeakDep === true;
 
   var cache = self._readyCache = self._readyCache || [];
+  var hashId = self._ready_hash_id;
 
   if (cache.indexOf(id) > -1) {
     throw new Error('Can not register id `' + id + '` twice');
   }
 
-  debug('Register task id %s, isWeakDep %s', id, isWeakDep);
+  debug('[%s] Register task id `%s`, isWeakDep %s', hashId, id, isWeakDep);
   cache.push(id);
 
   return once(function(err) {
@@ -53,11 +57,11 @@ function async(id, isWeakDep) {
     setImmediate(function() {
       if (err && !isWeakDep) {
         self._readyError = true;
-        debug('Throw error task id %s, error %s', id, err);
+        debug('[%s] Throw error task id `%s`, error %s', hashId, id, err);
         return self.emit('error', err);
       }
 
-      debug('End task id %s, error %s', id, err);
+      debug('[%s] End task id `%s`, error %s', hashId, id, err);
       cache.splice(cache.indexOf(id), 1);
 
       self.emit('ready_stat', {
@@ -66,7 +70,7 @@ function async(id, isWeakDep) {
       });
 
       if (cache.length === 0) {
-        debug('Fire callback async');
+        debug('[%s] Fire callback async', hashId);
         self.ready(true);
       }
     });
