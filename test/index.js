@@ -169,26 +169,31 @@ describe('koa-ready', function() {
     var endB = app.async('b');
     var endC = app.async('c');
     var endD = app.async('d');
+    var endE = app.async('e');
     setTimeout(endA, 1);
     setTimeout(endB, 80);
     setTimeout(endC, 10);
     setTimeout(endD, 50);
+    setTimeout(endE, 11000);
 
     setTimeout(function() {
       data.should.eql([{
         id: 'a',
-        remain: ['b', 'c', 'd']
+        remain: ['b', 'c', 'd', 'e']
       }, {
         id: 'c',
-        remain: ['b', 'd']
+        remain: ['b', 'd', 'e']
       }, {
         id: 'd',
-        remain: ['b']
+        remain: ['b', 'e']
       }, {
         id: 'b',
+        remain: ['e']
+      }, {
+        id: 'e',
         remain: []
       }]);
       done();
-    }, 100);
+    }, 11200);
   });
 });
