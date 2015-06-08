@@ -50,9 +50,15 @@ function async(id, isWeakDep) {
   debug('[%s] Register task id `%s`, isWeakDep %s', hashId, id, isWeakDep);
   cache.push(id);
 
-  return once(function(err) {
-    if (self._readyError === true) return;
+  var timer = setTimeout(function () {
+    console.log('[APP-READY] 10 seconds later %s was still unable to finish.', id);
+  }, 10000);
 
+  return once(function(err) {
+    if (timer) {
+      clearTimeout(timer);
+    }
+    if (self._readyError === true) return;
     // fire callback after all register
     setImmediate(function() {
       if (err && !isWeakDep) {
@@ -85,4 +91,3 @@ function once(fn) {
     fn(err);
   };
 }
-
