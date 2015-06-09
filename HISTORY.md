@@ -1,3 +1,8 @@
+## 1.0.0 / 2015-06-09
+
+- feat: set timeout when init
+- feat: add an option to set timeout when create a service
+
 ## 0.2.0 / 2015-03-17
 
 - chore: add appveyor and use npm scrips

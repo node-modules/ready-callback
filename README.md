@@ -33,7 +33,9 @@ app.ready(function() {
 });
 ```
 
-Handle error
+### Error Handle
+
+If task is called with error, `error` event will be emit, `ready` will never be called.
 
 ```
 // register a service that will emit error
@@ -48,13 +50,64 @@ app.on('error', function(err) {
 });
 ```
 
-Get data every task end
+### Weak Dependency
+
+If you set a task weak dependency, task will be done without emit `error`.
+
+```
+var done = app.async('service', {isWeakDep: true});
+serviceLaunch(function(err) {
+  done(err);
+});
+
+// will be ready
+app.ready(function() {
+  app.listen();
+});
+
+app.on('error', function(err) {
+  // never be called
+});
+```
+
+### Ready Status
+
+You can get status every task end.
 
 ```
 app.on('ready_stat', function(data) {
   console.log(data.id); // id of the ended task 
   console.log(data.remain); // tasks waiting to be ended 
 });
+```
+
+### Timeout
+
+You can set timeout when a task run a long time.
+
+```
+ready(app, {timeout: 1000});
+app.on('ready_timeout', function(id) {
+  // this will be called after 1s that `service` task don't complete
+});
+
+var done = app.async('service');
+serviceLaunch(function() {
+  // run a long time
+  done();
+});
+```
+
+You can also set timeout for every task
+
+```
+ready(app);
+app.on('ready_timeout', function(id) {
+  // this will be called after 1s that `service` task don't complete
+});
+
+var done = app.async('service1', {timeout: 1000});
+serviceLaunch(done);
 ```
 
 ## LISENCE
