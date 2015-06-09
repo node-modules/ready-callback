@@ -3,11 +3,14 @@
 var debug = require('debug')('koa-ready');
 var ready = require('ready');
 
-module.exports = function(app) {
+module.exports = function(app, opt) {
   if (!app) return;
+
+  opt || (opt = {});
 
   // unique ready id for app
   app._ready_hash_id = app._ready_hash_id || Date.now();
+  app._ready_timeout = app._ready_timeout || opt.timeout || 10000;
 
   // inject async method
   app.async = async;
@@ -44,7 +47,7 @@ function async(id, opt) {
   }
 
   var isWeakDep = opt.isWeakDep === true;
-  var timeout = opt.timeout || 10000;
+  var timeout = opt.timeout || self._ready_timeout;
 
   var cache = self._readyCache = self._readyCache || [];
   var hashId = self._ready_hash_id;

@@ -222,4 +222,26 @@ describe('koa-ready', function() {
       done();
     }, 100);
   });
+
+  it('should set timeout when init', function(done) {
+    var timeout = [];
+    var app = koa();
+    ready(app, {timeout: 10});
+
+    app.on('ready_timeout', function(id) {
+      timeout.push(id);
+    });
+
+    var endA = app.async('a');
+    var endB = app.async('b');
+    var endC = app.async('c');
+    setTimeout(endA, 100);
+    setTimeout(endB, 100);
+    setTimeout(endC, 5);
+
+    setTimeout(function() {
+      timeout.should.eql(['a', 'b']);
+      done();
+    }, 150);
+  });
 });
