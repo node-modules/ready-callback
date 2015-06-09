@@ -84,7 +84,7 @@ describe('koa-ready', function() {
     var spyError = spy();
     var spyReady = spy();
 
-    var endA = app.async('a', true);
+    var endA = app.async('a', {isWeakDep: true});
     endA(new Error('error'));
 
     var endB = app.async('b');
@@ -162,29 +162,39 @@ describe('koa-ready', function() {
 
   it('should emit ready_stat when every task end', function(done) {
     var data = [];
+    var timeout = [];
     app.on('ready_stat', function(e) {
       data.push(e);
+    });
+    app.on('ready_timeout', function(id) {
+      timeout.push(id);
     });
     var endA = app.async('a');
     var endB = app.async('b');
     var endC = app.async('c');
     var endD = app.async('d');
     var endE = app.async('e');
+    var endF = app.async('f', {timeout: 10});
     setTimeout(endA, 1);
     setTimeout(endB, 80);
     setTimeout(endC, 10);
     setTimeout(endD, 50);
     setTimeout(endE, 11000);
+    setTimeout(endF, 50);
 
     setTimeout(function() {
+      timeout.should.eql(['f', 'e']);
       data.should.eql([{
         id: 'a',
-        remain: ['b', 'c', 'd', 'e']
+        remain: ['b', 'c', 'd', 'e', 'f']
       }, {
         id: 'c',
-        remain: ['b', 'd', 'e']
+        remain: ['b', 'd', 'e', 'f']
       }, {
         id: 'd',
+        remain: ['b', 'e', 'f']
+      }, {
+        id: 'f',
         remain: ['b', 'e']
       }, {
         id: 'b',
@@ -195,5 +205,21 @@ describe('koa-ready', function() {
       }]);
       done();
     }, 11200);
+  });
+
+  it('should clearTimeout', function(done) {
+    var spyTimeout = spy();
+
+    app.on('ready_timeout', spyTimeout);
+
+    var endA = app.async('a', {timeout: 50});
+    var endB = app.async('b', {timeout: 50});
+    setTimeout(endA, 10);
+    setTimeout(endB, 10);
+
+    setTimeout(function() {
+      spyTimeout.called.should.be.false;
+      done();
+    }, 100);
   });
 });

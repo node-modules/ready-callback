@@ -27,18 +27,24 @@ module.exports = function(app) {
 /*
   Create a async task
 
-  id: unique id for one task
-  isWeakDep: whether it's a weak dependency, default: false
+  - id: unique id for one task
+  - opt
+    - isWeakDep: whether it's a weak dependency, default: false
+    - timeout: emit `ready_timeout` when it's over timeout, default: 10000ms
 */
 
-function async(id, isWeakDep) {
+function async(id, opt) {
+  opt || (opt = {});
+
   /* jshint validthis:true */
   var self = this;
 
   if (!id) {
     throw new Error('Should specify id');
   }
-  isWeakDep = isWeakDep === true;
+
+  var isWeakDep = opt.isWeakDep === true;
+  var timeout = opt.timeout || 10000;
 
   var cache = self._readyCache = self._readyCache || [];
   var hashId = self._ready_hash_id;
@@ -50,14 +56,11 @@ function async(id, isWeakDep) {
   debug('[%s] Register task id `%s`, isWeakDep %s', hashId, id, isWeakDep);
   cache.push(id);
 
-  var timer = setTimeout(function () {
-    console.log('[APP-READY] 10 seconds later %s was still unable to finish.', id);
-  }, 10000);
+  var timer = setTimeout(this.emit.bind(this, 'ready_timeout', id), timeout);
 
   return once(function(err) {
-    if (timer) {
-      clearTimeout(timer);
-    }
+    clearTimeout(timer);
+
     if (self._readyError === true) return;
     // fire callback after all register
     setImmediate(function() {
