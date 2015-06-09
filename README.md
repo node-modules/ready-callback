@@ -5,8 +5,8 @@ Launch server after all async task ready
 ---
 
 [![NPM version](https://img.shields.io/npm/v/koa-ready.svg?style=flat)](https://npmjs.org/package/koa-ready)
-[![Build Status](https://img.shields.io/travis/popomore/koa-ready.svg?style=flat)](https://travis-ci.org/popomore/koa-ready)
-[![Build Status](https://img.shields.io/coveralls/popomore/koa-ready.svg?style=flat)](https://coveralls.io/r/popomore/koa-ready)
+[![Build Status](https://img.shields.io/travis/koajs/koa-ready.svg?style=flat)](https://travis-ci.org/koajs/koa-ready)
+[![Build Status](https://img.shields.io/coveralls/koajs/koa-ready.svg?style=flat)](https://coveralls.io/r/koajs/koa-ready)
 [![NPM downloads](http://img.shields.io/npm/dm/koa-ready.svg?style=flat)](https://npmjs.org/package/koa-ready)
 
 ## Install
