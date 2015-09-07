@@ -11,6 +11,8 @@ module.exports = function(app, opt) {
   // unique ready id for app
   app._ready_hash_id = app._ready_hash_id || Date.now();
   app._ready_timeout = app._ready_timeout || opt.timeout || 10000;
+  // global weak dependency, default is false
+  app._ready_weak_dep = '_ready_weak_dep' in app ? app._ready_weak_dep : opt.isWeakDep === true;
 
   // inject async method
   app.async = async;
@@ -46,7 +48,10 @@ function async(id, opt) {
     throw new Error('Should specify id');
   }
 
-  var isWeakDep = opt.isWeakDep === true;
+  var isWeakDep = self._ready_weak_dep === true;
+  if (!isWeakDep) {
+    isWeakDep = opt.isWeakDep === true;
+  }
   var timeout = opt.timeout || self._ready_timeout;
 
   var cache = self._readyCache = self._readyCache || [];
