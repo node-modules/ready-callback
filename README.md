@@ -12,7 +12,7 @@ Launch server after all async task ready
 ## Install
 
 ```
-$ npm install koa-ready -g
+$ npm install koa-ready
 ```
 
 ## Usage
