@@ -17,6 +17,8 @@ $ npm install ready-callback
 
 ## Usage
 
+**Note: ready-callback is using `class`, so you should use node>=2**
+
 ```
 var koa = require('koa');
 var ready = require('ready-callback')();
