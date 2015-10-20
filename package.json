@@ -33,7 +33,7 @@
   "scripts": {
     "lint": "eslint .",
     "test": "mocha -R spec -t 20000",
-    "cov": "npm run lint && istanbul cover node_modules/mocha/bin/_mocha -- -R spec -t 20000",
+    "cov": "npm run lint && istanbul cover --report=none node_modules/mocha/bin/_mocha -- -R spec -t 20000 && istanbul report json html",
     "autod": "autod -e test/fixtures -f ~ -w"
   }
 }

@@ -9,4 +9,4 @@ node_js:
 
 script: npm run cov
 
-after_success: npm run coveralls
+after_success: npm install codecov.io && cat ./coverage/coverage-final.json | ./node_modules/codecov.io/bin/codecov.io.js
