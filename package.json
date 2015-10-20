@@ -16,10 +16,9 @@
     "uuid": "~2.0.1"
   },
   "devDependencies": {
-    "coveralls": "2",
     "istanbul": "0",
-    "jshint": "*",
-    "koa": "~1.1.0",
+    "eslint": "1",
+    "koa": "1",
     "mocha": "1",
     "should": "6",
     "spy": "~0.1.3"
@@ -32,10 +31,9 @@
   "author": "popomore <sakura9515@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "lint": "jshint .",
-    "test": "_mocha -R spec -t 20000",
-    "cov": "jshint . && node --harmony node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R spec -t 20000",
-    "coveralls": "cat ./coverage/lcov.info | coveralls",
+    "lint": "eslint .",
+    "test": "mocha -R spec -t 20000",
+    "cov": "npm run lint && istanbul cover node_modules/mocha/bin/_mocha -- -R spec -t 20000",
     "autod": "autod -e test/fixtures -f ~ -w"
   }
 }

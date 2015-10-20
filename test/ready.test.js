@@ -196,19 +196,19 @@ describe('Ready', function() {
         timeout.should.eql(['e']);
         data.should.eql([{
           id: 'a',
-          remain: ['b', 'c', 'd', 'e']
+          remain: ['b', 'c', 'd', 'e'],
         }, {
           id: 'c',
-          remain: ['b', 'd', 'e']
+          remain: ['b', 'd', 'e'],
         }, {
           id: 'd',
-          remain: ['b', 'e']
+          remain: ['b', 'e'],
         }, {
           id: 'b',
-          remain: ['e']
+          remain: ['e'],
         }, {
           id: 'e',
-          remain: []
+          remain: [],
         }]);
         done();
       }, 11200);
@@ -335,13 +335,13 @@ describe('Ready', function() {
       ready = new Ready({ isWeakDep: true });
       ready.mixin(obj);
 
-      var spyError = spy();
-      var spyReady = spy();
+      const spyError = spy();
+      const spyReady = spy();
 
-      var endA = obj.readyCallback('a', {isWeakDep: false});
+      const endA = obj.readyCallback('a', {isWeakDep: false});
       endA(new Error('error'));
 
-      var endB = obj.readyCallback('b');
+      const endB = obj.readyCallback('b');
       setTimeout(endB, 10);
 
       obj.on('error', spyError);
