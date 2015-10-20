@@ -1,3 +1,13 @@
+
+1.0.0 / 2015-10-20
+==================
+
+ * refactor: koa-ready rename to ready-callback
+
+---
+
+koa-ready histroy
+
 ## 1.0.0 / 2015-06-09
 
 - feat: set timeout when init
