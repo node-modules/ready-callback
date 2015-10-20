@@ -1,5 +1,5 @@
 {
-  "name": "koa-ready",
+  "name": "ready-callback",
   "version": "1.0.0",
   "description": "Launch server after all async task ready",
   "keywords": [
@@ -25,9 +25,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/koajs/koa-ready"
+    "url": "https://github.com/koajs/ready-callback"
   },
-  "homepage": "https://github.com/koajs/koa-ready",
+  "homepage": "https://github.com/koajs/ready-callback",
   "author": "popomore <sakura9515@gmail.com>",
   "license": "MIT",
   "scripts": {
