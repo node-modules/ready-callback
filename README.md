@@ -1,13 +1,25 @@
 # ready-callback
 
+[![NPM version][npm-image]][npm-url]
+[![build status][travis-image]][travis-url]
+[![Test coverage][codecov-image]][codecov-url]
+[![David deps][david-image]][david-url]
+[![npm download][download-image]][download-url]
+
+[npm-image]: https://img.shields.io/npm/v/ready-callback.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/ready-callback
+[travis-image]: https://img.shields.io/travis/node-modules/ready-callback.svg?style=flat-square
+[travis-url]: https://travis-ci.org/node-modules/ready-callback
+[codecov-image]: https://codecov.io/github/node-modules/ready-callback/coverage.svg?branch=master
+[codecov-url]: https://codecov.io/github/node-modules/ready-callback?branch=master
+[david-image]: https://img.shields.io/david/node-modules/ready-callback.svg?style=flat-square
+[david-url]: https://david-dm.org/node-modules/ready-callback
+[download-image]: https://img.shields.io/npm/dm/ready-callback.svg?style=flat-square
+[download-url]: https://npmjs.org/package/ready-callback
+
 Launch server after all async task ready
 
 ---
-
-[![NPM version](https://img.shields.io/npm/v/ready-callback.svg?style=flat)](https://npmjs.org/package/ready-callback)
-[![Build Status](https://img.shields.io/travis/koajs/ready-callback.svg?style=flat)](https://travis-ci.org/koajs/ready-callback)
-[![Build Status](https://img.shields.io/coveralls/koajs/ready-callback.svg?style=flat)](https://coveralls.io/r/koajs/ready-callback)
-[![NPM downloads](http://img.shields.io/npm/dm/ready-callback.svg?style=flat)](https://npmjs.org/package/ready-callback)
 
 ## Install
 
