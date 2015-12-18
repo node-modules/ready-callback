@@ -24,7 +24,7 @@
     "eslint": "1",
     "koa": "1",
     "mocha": "2.3.3",
-    "should": "6",
+    "should": "8.0.2",
     "spy": "0"
   },
   "repository": {
