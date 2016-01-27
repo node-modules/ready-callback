@@ -23,7 +23,7 @@
     "istanbul": "0",
     "eslint": "1",
     "koa": "1",
-    "mocha": "2.3.3",
+    "mocha": "2.4.2",
     "should": "6",
     "spy": "0"
   },
