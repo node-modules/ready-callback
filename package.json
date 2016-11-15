@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "istanbul": "0",
-    "eslint": "1",
+    "eslint": "3.10.2",
     "koa": "1",
     "mocha": "2.3.3",
     "should": "6",
