@@ -1,6 +1,7 @@
 'use strict';
 
 const should = require('should');
+const assert = require('assert');
 const EventEmitter = require('events');
 const spy = require('spy');
 const Ready = require('..').Ready;
@@ -9,7 +10,8 @@ describe('Ready', function() {
 
   describe('without arguments', function() {
 
-    let obj, ready;
+    let obj,
+      ready;
     beforeEach(function() {
       obj = new EventEmitter();
       ready = new Ready();
@@ -100,7 +102,9 @@ describe('Ready', function() {
 
       setTimeout(function() {
         spyError.callCount.should.eql(2);
-        spyReady.callCount.should.eql(0);
+        spyReady.callCount.should.eql(2);
+        assert(spyReady.calls[0].arguments[0].message === 'aaa');
+        assert(spyReady.calls[1].arguments[0].message === 'aaa');
         done();
       }, 20);
     });
@@ -142,8 +146,9 @@ describe('Ready', function() {
 
       setTimeout(function() {
         spyError.callCount.should.eql(1);
-        spyReady.callCount.should.eql(0);
-        //obj._readyCache.should.eql(['a', 'b']);
+        spyReady.callCount.should.eql(1);
+        assert(spyReady.calls[0].arguments[0].message === 'error');
+        // obj._readyCache.should.eql(['a', 'b']);
         done();
       }, 20);
     });
@@ -193,19 +198,19 @@ describe('Ready', function() {
       setTimeout(endE, 11000);
 
       setTimeout(function() {
-        timeout.should.eql(['e']);
+        timeout.should.eql([ 'e' ]);
         data.should.eql([{
           id: 'a',
-          remain: ['b', 'c', 'd', 'e'],
+          remain: [ 'b', 'c', 'd', 'e' ],
         }, {
           id: 'c',
-          remain: ['b', 'd', 'e'],
+          remain: [ 'b', 'd', 'e' ],
         }, {
           id: 'd',
-          remain: ['b', 'e'],
+          remain: [ 'b', 'e' ],
         }, {
           id: 'b',
-          remain: ['e'],
+          remain: [ 'e' ],
         }, {
           id: 'e',
           remain: [],
@@ -218,7 +223,8 @@ describe('Ready', function() {
 
   describe('timeout', function() {
 
-    let obj, ready;
+    let obj,
+      ready;
     beforeEach(function() {
       obj = new EventEmitter();
       ready = new Ready();
@@ -232,10 +238,10 @@ describe('Ready', function() {
       obj.on('ready_timeout', spyTimeout);
       obj.ready(spyReady);
 
-      const endA = obj.readyCallback('a', {timeout: 50});
-      const endB = obj.readyCallback('b', {timeout: 50});
+      const endA = obj.readyCallback('a', { timeout: 50 });
+      const endB = obj.readyCallback('b', { timeout: 50 });
       const endC = obj.readyCallback('c');
-      const endD = obj.readyCallback('d', {timeout: 50});
+      const endD = obj.readyCallback('d', { timeout: 50 });
       setTimeout(endA, 100);
       setTimeout(endB, 10);
       setTimeout(endC, 1);
@@ -252,7 +258,7 @@ describe('Ready', function() {
 
     it('should emit ready_timeout with global timeout', function(done) {
       obj = new EventEmitter();
-      ready = new Ready({timeout: 50});
+      ready = new Ready({ timeout: 50 });
       ready.mixin(obj);
 
       const spyTimeout = spy();
@@ -286,8 +292,8 @@ describe('Ready', function() {
       obj.on('ready_timeout', spyTimeout);
       obj.ready(spyReady);
 
-      const endA = obj.readyCallback('a', {timeout: 50});
-      const endB = obj.readyCallback('b', {timeout: 50});
+      const endA = obj.readyCallback('a', { timeout: 50 });
+      const endB = obj.readyCallback('b', { timeout: 50 });
       setTimeout(endA, 10);
       setTimeout(endB, 10);
 
@@ -302,7 +308,8 @@ describe('Ready', function() {
 
   describe('weakDep', function() {
 
-    let obj, ready;
+    let obj,
+      ready;
 
     it('should fire the callback when weakDep', function(done) {
       obj = new EventEmitter();
@@ -312,7 +319,7 @@ describe('Ready', function() {
       const spyError = spy();
       const spyReady = spy();
 
-      const endA = obj.readyCallback('a', {isWeakDep: true});
+      const endA = obj.readyCallback('a', { isWeakDep: true });
       endA(new Error('error'));
 
       const endB = obj.readyCallback('b');
@@ -338,7 +345,7 @@ describe('Ready', function() {
       const spyError = spy();
       const spyReady = spy();
 
-      const endA = obj.readyCallback('a', {isWeakDep: false});
+      const endA = obj.readyCallback('a', { isWeakDep: false });
       endA(new Error('error'));
 
       const endB = obj.readyCallback('b');
@@ -384,7 +391,8 @@ describe('Ready', function() {
     ready.mixin();
     should.not.exists(ready.obj);
 
-    const obj1 = {}, obj2 = {};
+    const obj1 = {},
+      obj2 = {};
     ready.mixin(obj1);
     ready.obj.should.equal(obj1);
 
