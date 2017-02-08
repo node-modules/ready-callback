@@ -7,7 +7,7 @@
     "ready",
     "async"
   ],
-  "main": "index.js",
+  "main": "lib/ready.js",
   "files": [
     "index.js",
     "lib"
