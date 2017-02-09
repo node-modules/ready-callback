@@ -390,17 +390,31 @@ describe('Ready', function() {
       });
     });
 
-    it('should get error object when pass string in callback', done => {
-      const obj = {};
-      const ready = new Ready();
-      ready.mixin(obj);
+    it('should get error object when pass other type in callback', function* () {
+      let err = yield assertErrorType('error');
+      assert(err.message === 'error');
 
-      const end = obj.readyCallback('a');
-      obj.ready(err => {
-        assert(err.message === 'error');
-        done();
-      });
-      end('error');
+      err = yield assertErrorType(0);
+      assert(err.message === '0');
+
+      err = yield assertErrorType([ '1', '2' ]);
+      assert(err.message === '1,2');
+
+      err = yield assertErrorType({});
+      assert(err.message === '[object Object]');
+
+      err = yield assertErrorType(true);
+      assert(err.message === 'true');
+
+      function assertErrorType(value) {
+        const obj = {};
+        const ready = new Ready();
+        ready.mixin(obj);
+
+        const end = obj.readyCallback('a');
+        end(value);
+        return obj.ready().catch(err => err);
+      }
     });
 
   });
