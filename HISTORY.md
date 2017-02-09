@@ -1,4 +1,10 @@
 
+2.0.0 / 2017-02-09
+==================
+
+  * feat: call .ready(err) when callback pass an error (#98)
+  * chore(package): update mocha to version 2.3.3
+
 1.0.0 / 2015-10-20
 ==================
 
