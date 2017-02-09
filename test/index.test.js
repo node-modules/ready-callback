@@ -1,6 +1,6 @@
 'use strict';
 
-require('should');
+const assert = require('assert');
 const koa = require('koa');
 const spy = require('spy');
 const ready = require('..');
@@ -12,7 +12,6 @@ describe('koa', function() {
     app = koa();
     ready().mixin(app);
   });
-
 
   it('should fire the callback after readyCallback call', function(done) {
     const spyReady = spy();
@@ -29,7 +28,7 @@ describe('koa', function() {
     app.ready(spyReady);
 
     setTimeout(function() {
-      spyReady.callCount.should.eql(1);
+      assert(spyReady.callCount === 1);
       done();
     }, 100);
   });

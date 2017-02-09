@@ -1,6 +1,6 @@
 'use strict';
 
-const should = require('should');
+const assert = require('assert');
 const EventEmitter = require('events');
 const spy = require('spy');
 const Ready = require('..').Ready;
@@ -9,7 +9,8 @@ describe('Ready', function() {
 
   describe('without arguments', function() {
 
-    let obj, ready;
+    let obj;
+    let ready;
     beforeEach(function() {
       obj = new EventEmitter();
       ready = new Ready();
@@ -22,7 +23,7 @@ describe('Ready', function() {
       ready.ready(spyReady);
 
       setTimeout(function() {
-        spyReady.callCount.should.eql(2);
+        assert(spyReady.callCount === 2);
         done();
       }, 10);
     });
@@ -39,7 +40,7 @@ describe('Ready', function() {
       ready.ready(spyReady);
 
       setTimeout(function() {
-        spyReady.callCount.should.eql(2);
+        assert(spyReady.callCount === 2);
         done();
       }, 10);
     });
@@ -60,7 +61,7 @@ describe('Ready', function() {
       obj.ready(spyReady);
 
       setTimeout(function() {
-        spyReady.callCount.should.eql(2);
+        assert(spyReady.callCount === 2);
         done();
       }, 100);
     });
@@ -77,7 +78,7 @@ describe('Ready', function() {
       ready.ready(spyReady);
 
       setTimeout(function() {
-        spyReady.callCount.should.eql(0);
+        assert(spyReady.callCount === 0);
         done();
       }, 20);
 
@@ -99,8 +100,10 @@ describe('Ready', function() {
       obj.ready(spyReady);
 
       setTimeout(function() {
-        spyError.callCount.should.eql(2);
-        spyReady.callCount.should.eql(0);
+        assert(spyError.callCount === 2);
+        assert(spyReady.callCount === 2);
+        assert(spyReady.calls[0].arguments[0].message === 'aaa');
+        assert(spyReady.calls[1].arguments[0].message === 'aaa');
         done();
       }, 20);
     });
@@ -110,8 +113,8 @@ describe('Ready', function() {
       const spyError = spy();
 
       const endA = obj.readyCallback('a');
+      const err = new Error('error');
       setTimeout(function() {
-        const err = new Error('error');
         endA(err);
         endA(err);
       }, 1);
@@ -120,8 +123,9 @@ describe('Ready', function() {
       obj.ready(spyReady);
 
       setTimeout(function() {
-        spyError.callCount.should.eql(1);
-        spyReady.called.should.be.false;
+        assert(spyError.callCount === 1);
+        assert(spyReady.callCount === 1);
+        assert(spyReady.calledWith(err));
         done();
       }, 10);
     });
@@ -141,9 +145,9 @@ describe('Ready', function() {
       obj.ready(spyReady);
 
       setTimeout(function() {
-        spyError.callCount.should.eql(1);
-        spyReady.callCount.should.eql(0);
-        //obj._readyCache.should.eql(['a', 'b']);
+        assert(spyError.callCount === 1);
+        assert(spyReady.callCount === 1);
+        assert(spyReady.calls[0].arguments[0].message === 'error');
         done();
       }, 20);
     });
@@ -160,7 +164,7 @@ describe('Ready', function() {
       ready.ready(spyReady);
 
       setTimeout(function() {
-        spyReady.callCount.should.eql(2);
+        assert(spyReady.callCount === 2);
         done();
       }, 10);
     });
@@ -193,19 +197,19 @@ describe('Ready', function() {
       setTimeout(endE, 11000);
 
       setTimeout(function() {
-        timeout.should.eql(['e']);
-        data.should.eql([{
+        assert.deepEqual(timeout, [ 'e' ]);
+        assert.deepEqual(data, [{
           id: 'a',
-          remain: ['b', 'c', 'd', 'e'],
+          remain: [ 'b', 'c', 'd', 'e' ],
         }, {
           id: 'c',
-          remain: ['b', 'd', 'e'],
+          remain: [ 'b', 'd', 'e' ],
         }, {
           id: 'd',
-          remain: ['b', 'e'],
+          remain: [ 'b', 'e' ],
         }, {
           id: 'b',
-          remain: ['e'],
+          remain: [ 'e' ],
         }, {
           id: 'e',
           remain: [],
@@ -218,7 +222,8 @@ describe('Ready', function() {
 
   describe('timeout', function() {
 
-    let obj, ready;
+    let obj,
+      ready;
     beforeEach(function() {
       obj = new EventEmitter();
       ready = new Ready();
@@ -232,27 +237,27 @@ describe('Ready', function() {
       obj.on('ready_timeout', spyTimeout);
       obj.ready(spyReady);
 
-      const endA = obj.readyCallback('a', {timeout: 50});
-      const endB = obj.readyCallback('b', {timeout: 50});
+      const endA = obj.readyCallback('a', { timeout: 50 });
+      const endB = obj.readyCallback('b', { timeout: 50 });
       const endC = obj.readyCallback('c');
-      const endD = obj.readyCallback('d', {timeout: 50});
+      const endD = obj.readyCallback('d', { timeout: 50 });
       setTimeout(endA, 100);
       setTimeout(endB, 10);
       setTimeout(endC, 1);
       setTimeout(endD, 80);
 
       setTimeout(function() {
-        spyReady.callCount.should.eql(1);
-        spyTimeout.callCount.should.eql(2);
-        spyTimeout.calledWith('a').should.be.true;
-        spyTimeout.calledWith('d').should.be.true;
+        assert(spyReady.callCount === 1);
+        assert(spyTimeout.callCount === 2);
+        assert(spyTimeout.calledWith('a'));
+        assert(spyTimeout.calledWith('d'));
         done();
       }, 150);
     });
 
     it('should emit ready_timeout with global timeout', function(done) {
       obj = new EventEmitter();
-      ready = new Ready({timeout: 50});
+      ready = new Ready({ timeout: 50 });
       ready.mixin(obj);
 
       const spyTimeout = spy();
@@ -271,10 +276,10 @@ describe('Ready', function() {
       setTimeout(endD, 80);
 
       setTimeout(function() {
-        spyReady.callCount.should.eql(1);
-        spyTimeout.callCount.should.eql(2);
-        spyTimeout.calledWith('a').should.be.true;
-        spyTimeout.calledWith('c').should.be.true;
+        assert(spyReady.callCount === 1);
+        assert(spyTimeout.callCount === 2);
+        assert(spyTimeout.calledWith('a'));
+        assert(spyTimeout.calledWith('c'));
         done();
       }, 150);
     });
@@ -286,14 +291,14 @@ describe('Ready', function() {
       obj.on('ready_timeout', spyTimeout);
       obj.ready(spyReady);
 
-      const endA = obj.readyCallback('a', {timeout: 50});
-      const endB = obj.readyCallback('b', {timeout: 50});
+      const endA = obj.readyCallback('a', { timeout: 50 });
+      const endB = obj.readyCallback('b', { timeout: 50 });
       setTimeout(endA, 10);
       setTimeout(endB, 10);
 
       setTimeout(function() {
-        spyReady.callCount.should.eql(1);
-        spyTimeout.called.should.be.false;
+        assert(spyReady.callCount === 1);
+        assert(spyTimeout.called === false);
         done();
       }, 100);
     });
@@ -302,7 +307,8 @@ describe('Ready', function() {
 
   describe('weakDep', function() {
 
-    let obj, ready;
+    let obj;
+    let ready;
 
     it('should fire the callback when weakDep', function(done) {
       obj = new EventEmitter();
@@ -312,7 +318,7 @@ describe('Ready', function() {
       const spyError = spy();
       const spyReady = spy();
 
-      const endA = obj.readyCallback('a', {isWeakDep: true});
+      const endA = obj.readyCallback('a', { isWeakDep: true });
       endA(new Error('error'));
 
       const endB = obj.readyCallback('b');
@@ -324,8 +330,8 @@ describe('Ready', function() {
       obj.ready(spyReady);
 
       setTimeout(function() {
-        spyError.called.should.be.false;
-        spyReady.callCount.should.eql(2);
+        assert(spyError.called === false);
+        assert(spyReady.callCount === 2);
         done();
       }, 20);
     });
@@ -338,8 +344,9 @@ describe('Ready', function() {
       const spyError = spy();
       const spyReady = spy();
 
-      const endA = obj.readyCallback('a', {isWeakDep: false});
-      endA(new Error('error'));
+      const endA = obj.readyCallback('a', { isWeakDep: false });
+      const err = new Error('error');
+      endA(err);
 
       const endB = obj.readyCallback('b');
       setTimeout(endB, 10);
@@ -348,11 +355,68 @@ describe('Ready', function() {
       obj.ready(spyReady);
 
       setTimeout(function() {
-        spyError.callCount.should.eql(1);
-        spyReady.called.should.be.false;
+        assert(spyError.callCount === 1);
+        assert(spyReady.callCount === 1);
+        assert(spyReady.calledWith(err));
         done();
       }, 20);
     });
+  });
+
+  describe('error', () => {
+    it('should get error in ready', done => {
+      const obj = {};
+      const ready = new Ready();
+      ready.mixin(obj);
+
+      const end = obj.readyCallback('a');
+      obj.ready(err => {
+        assert(err.message === 'error');
+        done();
+      });
+      end(new Error('error'));
+    });
+
+    it('should ready with error after callback error', done => {
+      const obj = {};
+      const ready = new Ready();
+      ready.mixin(obj);
+
+      const end = obj.readyCallback('a');
+      end(new Error('error'));
+      obj.ready(err => {
+        assert(err.message === 'error');
+        done();
+      });
+    });
+
+    it('should get error object when pass other type in callback', function* () {
+      let err = yield assertErrorType('error');
+      assert(err.message === 'error');
+
+      err = yield assertErrorType(0);
+      assert(err.message === '0');
+
+      err = yield assertErrorType([ '1', '2' ]);
+      assert(err.message === '1,2');
+
+      err = yield assertErrorType({});
+      assert(err.message === '[object Object]');
+
+      err = yield assertErrorType(true);
+      assert(err.message === 'true');
+
+      function assertErrorType(value) {
+        const obj = {};
+        const ready = new Ready();
+        ready.mixin(obj);
+
+        const end = obj.readyCallback('a');
+        end(value);
+        return obj.ready().catch(err => err);
+      }
+    });
+
   });
 
   it('should not throw when mixin an object that do not support events', function(done) {
@@ -363,33 +427,36 @@ describe('Ready', function() {
     const spyReady = spy();
     const spyError = spy();
     const end = obj.readyCallback('a');
-    end(new Error());
+    const err = new Error('error');
+    end(err);
 
     ready.ready(spyReady);
     ready.on('error', spyError);
-    should.not.exists(obj.on);
+    assert(!obj.on);
     obj.ready(spyReady);
 
     setTimeout(function() {
-      spyReady.called.should.be.false;
-      spyError.callCount.should.eql(1);
+      assert(spyReady.called === true);
+      assert(spyReady.calledWith(err));
+      assert(spyError.callCount === 1);
       done();
     }, 10);
   });
 
   it('should mixin only once', function() {
     const ready = new Ready();
-    should.not.exists(ready.obj);
+    assert(!ready.obj);
 
     ready.mixin();
-    should.not.exists(ready.obj);
+    assert(!ready.obj);
 
-    const obj1 = {}, obj2 = {};
+    const obj1 = {},
+      obj2 = {};
     ready.mixin(obj1);
-    ready.obj.should.equal(obj1);
+    assert(ready.obj === obj1);
 
     ready.mixin(obj2);
-    ready.obj.should.equal(obj1);
-    ready.obj.should.not.equal(obj2);
+    assert(ready.obj === obj1);
+    assert(ready.obj !== obj2);
   });
 });
