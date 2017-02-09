@@ -308,8 +308,8 @@ describe('Ready', function() {
 
   describe('weakDep', function() {
 
-    let obj,
-      ready;
+    let obj;
+    let ready;
 
     it('should fire the callback when weakDep', function(done) {
       obj = new EventEmitter();
@@ -360,6 +360,48 @@ describe('Ready', function() {
         done();
       }, 20);
     });
+  });
+
+  describe('error', () => {
+    it('should get error in ready', done => {
+      const obj = {};
+      const ready = new Ready();
+      ready.mixin(obj);
+
+      const end = obj.readyCallback('a');
+      obj.ready(err => {
+        assert(err.message === 'error');
+        done();
+      });
+      end(new Error('error'));
+    });
+
+    it('should ready with error after callback error', done => {
+      const obj = {};
+      const ready = new Ready();
+      ready.mixin(obj);
+
+      const end = obj.readyCallback('a');
+      end(new Error('error'));
+      obj.ready(err => {
+        assert(err.message === 'error');
+        done();
+      });
+    });
+
+    it('should get error object when pass string in callback', done => {
+      const obj = {};
+      const ready = new Ready();
+      ready.mixin(obj);
+
+      const end = obj.readyCallback('a');
+      obj.ready(err => {
+        assert(err.message === 'error');
+        done();
+      });
+      end('error');
+    });
+
   });
 
   it('should not throw when mixin an object that do not support events', function(done) {
