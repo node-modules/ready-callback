@@ -406,6 +406,9 @@ describe('Ready', function() {
       err = yield assertErrorType(true);
       assert(err.message === 'true');
 
+      err = yield assertErrorType(null);
+      assert(err === undefined);
+
       function assertErrorType(value) {
         const obj = {};
         const ready = new Ready();
