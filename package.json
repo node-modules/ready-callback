@@ -13,7 +13,7 @@
     "lib"
   ],
   "dependencies": {
-    "debug": "^2.6.0",
+    "debug": "^2.6.6",
     "get-ready": "^2.0.0",
     "once": "^1.4.0",
     "uuid": "^3.0.1"
