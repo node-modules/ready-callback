@@ -462,4 +462,42 @@ describe('Ready', function() {
     assert(ready.obj === obj1);
     assert(ready.obj !== obj2);
   });
+
+  describe('willReady', function() {
+    it('should fire willRead callbacks before ready', function(done) {
+      const obj = new EventEmitter();
+      const ready = new Ready();
+      ready.mixin(obj);
+      const endA = obj.readyCallback('a');
+      const spyWillReady = spy();
+      obj.willReady(spyWillReady);
+      setTimeout(endA, 1);
+      setTimeout(function() {
+        assert.strictEqual(spyWillReady.callCount, 1);
+        done();
+      }, 10);
+    });
+
+    describe('willReady failed', function() {
+      it('should ready error', function(done) {
+        const obj = new EventEmitter();
+        const ready = new Ready();
+        ready.mixin(obj);
+        const endA = obj.readyCallback('a');
+        const willReadyThrows = function() {
+          throw new Error('mock error');
+        };
+        obj.willReady(willReadyThrows);
+        let err;
+        obj.ready(function(e) {
+          err = e;
+        });
+        setTimeout(endA, 1);
+        setTimeout(function() {
+          assert.strictEqual(err && err.message, 'mock error');
+          done();
+        }, 10);
+      });
+    });
+  });
 });
