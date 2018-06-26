@@ -462,4 +462,19 @@ describe('Ready', function() {
     assert(ready.obj === obj1);
     assert(ready.obj !== obj2);
   });
+
+  describe('willReady', function() {
+    it('should fire willRead callbacks before ready', function() {
+      const obj = new EventEmitter();
+      const ready = new Ready();
+      ready.mixin(obj);
+      const endA = obj.readyCallback('a');
+      const spyWillReady = spy();
+      obj.willReady(spyWillReady);
+      setTimeout(endA, 1);
+      setTimeout(function() {
+        assert.strictEqual(spyWillReady.callCount, 1);
+      }, 10);
+    });
+  });
 });
