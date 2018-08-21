@@ -131,6 +131,21 @@ var done = app.readyCallback('service1', {timeout: 1000});
 serviceLaunch(done);
 ```
 
+### lazyStart
+
+You can set a ready-callback object to lazyStart. It will not check 
+ready status immediately, and should start manualy to check ready 
+status.
+
+```js
+var ready = require('ready-callback')({ lazyStart: true });
+yield sleep(1);
+// ready obj is not ready
+ready.start();
+yield sleep(1);
+// ready obj is ready now
+```
+
 ## LISENCE
 
 Copyright (c) 2015 popomore. Licensed under the MIT license.
