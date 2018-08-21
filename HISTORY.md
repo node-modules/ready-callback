@@ -1,4 +1,10 @@
 
+2.1.0 / 2018-08-21
+==================
+
+**features**
+  * [[`37bd48f`](http://github.com/node-modules/ready-callback/commit/37bd48fe923982169d98f402a8e6bf3e5c7efc8a)] - feat: add lazyStart option (#113) (killa <<killa123@126.com>>)
+
 2.0.1 / 2017-02-13
 ==================
 
