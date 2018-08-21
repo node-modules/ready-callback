@@ -4,6 +4,7 @@ const assert = require('assert');
 const EventEmitter = require('events');
 const spy = require('spy');
 const Ready = require('..').Ready;
+const sleep = require('mz-modules/sleep');
 
 describe('Ready', function() {
 
@@ -461,5 +462,20 @@ describe('Ready', function() {
     ready.mixin(obj2);
     assert(ready.obj === obj1);
     assert(ready.obj !== obj2);
+  });
+
+  describe('lazy start', function() {
+    it('should ready after start manually', function* () {
+      const obj = new EventEmitter();
+      const ready = new Ready({ lazyStart: true });
+      const readySpy = spy();
+      ready.ready(readySpy);
+      ready.mixin(obj);
+      yield sleep(1);
+      assert(readySpy.called === false);
+      ready.start();
+      yield sleep(1);
+      assert(readySpy.called === true);
+    });
   });
 });

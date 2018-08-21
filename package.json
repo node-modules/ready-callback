@@ -25,6 +25,7 @@
     "eslint": "^3.15.0",
     "eslint-config-egg": "^3.2.0",
     "koa": "^1.2.4",
+    "mz-modules": "^2.1.0",
     "spy": "^1.0.0"
   },
   "repository": {
