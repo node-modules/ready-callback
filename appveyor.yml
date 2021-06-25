@@ -1,8 +1,9 @@
 environment:
   matrix:
-    - nodejs_version: '4'
-    - nodejs_version: '6'
-    - nodejs_version: '7'
+    - nodejs_version: '8'
+    - nodejs_version: '10'
+    - nodejs_version: '12'
+    - nodejs_version: '14'
 
 install:
   - ps: Install-Product node $env:nodejs_version
@@ -11,6 +12,6 @@ install:
 test_script:
   - node --version
   - npm --version
-  - npm run ci
+  - npm run test
 
 build: off
