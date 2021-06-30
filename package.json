@@ -43,7 +43,7 @@
     "ci": "npm run lint && egg-bin cov"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=12"
   },
   "ci": {
     "version": "8, 10, 12, 14"
