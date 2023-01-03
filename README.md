@@ -1,6 +1,7 @@
 # ready-callback
 
 [![NPM version][npm-image]][npm-url]
+[![CI](https://github.com/node-modules/ready-callback/actions/workflows/ci.yml/badge.svg)](https://github.com/node-modules/ready-callback/actions/workflows/ci.yml)
 [![Test coverage][codecov-image]][codecov-url]
 [![npm download][download-image]][download-url]
 
