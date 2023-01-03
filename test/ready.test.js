@@ -1,10 +1,13 @@
-'use strict';
-
 const assert = require('assert');
 const EventEmitter = require('events');
 const spy = require('spy');
 const Ready = require('..').Ready;
-const sleep = require('mz-modules/sleep');
+
+function sleep(ms) {
+  return new Promise(resolve => {
+    setTimeout(resolve, ms);
+  });
+}
 
 describe('Ready', function() {
 
