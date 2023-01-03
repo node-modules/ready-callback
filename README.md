@@ -1,19 +1,14 @@
 # ready-callback
 
 [![NPM version][npm-image]][npm-url]
-[![build status][travis-image]][travis-url]
+[![CI](https://github.com/node-modules/ready-callback/actions/workflows/ci.yml/badge.svg)](https://github.com/node-modules/ready-callback/actions/workflows/ci.yml)
 [![Test coverage][codecov-image]][codecov-url]
-[![David deps][david-image]][david-url]
 [![npm download][download-image]][download-url]
 
 [npm-image]: https://img.shields.io/npm/v/ready-callback.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/ready-callback
-[travis-image]: https://img.shields.io/travis/node-modules/ready-callback.svg?style=flat-square
-[travis-url]: https://travis-ci.org/node-modules/ready-callback
 [codecov-image]: https://codecov.io/github/node-modules/ready-callback/coverage.svg?branch=master
 [codecov-url]: https://codecov.io/github/node-modules/ready-callback?branch=master
-[david-image]: https://img.shields.io/david/node-modules/ready-callback.svg?style=flat-square
-[david-url]: https://david-dm.org/node-modules/ready-callback
 [download-image]: https://img.shields.io/npm/dm/ready-callback.svg?style=flat-square
 [download-url]: https://npmjs.org/package/ready-callback
 
@@ -23,7 +18,7 @@ Launch server after all async task ready
 
 ## Install
 
-```
+```bash
 $ npm install ready-callback
 ```
 
@@ -31,7 +26,7 @@ $ npm install ready-callback
 
 **Note: ready-callback is using `class`, so you should use node>=2**
 
-```
+```js
 var koa = require('koa');
 var ready = require('ready-callback')();
 var app = koa();
@@ -51,7 +46,7 @@ app.ready(function() {
 
 If task is called with error, `error` event will be emit, `ready` will never be called.
 
-```
+```js
 // register a service that will emit error
 var done = app.readyCallback('service');
 serviceLaunch(function(err) {
@@ -68,7 +63,7 @@ app.on('error', function(err) {
 
 If you set a task weak dependency, task will be done without emit `error`.
 
-```
+```js
 var done = app.readyCallback('service', {isWeakDep: true});
 serviceLaunch(function(err) {
   done(err);
@@ -86,7 +81,7 @@ app.on('error', function(err) {
 
 You can also set for all ready-callback
 
-```
+```js
 var ready = require('ready-callback')({isWeakDep: true});
 ```
 
@@ -94,7 +89,7 @@ var ready = require('ready-callback')({isWeakDep: true});
 
 You can get status every callback end.
 
-```
+```js
 app.on('ready_stat', function(data) {
   console.log(data.id); // id of the ended task
   console.log(data.remain); // tasks waiting to be ended
@@ -105,7 +100,7 @@ app.on('ready_stat', function(data) {
 
 You can set timeout when a task run a long time.
 
-```
+```js
 var ready = require('ready-callback')({timeout: 1000});
 ready.mixin(app);
 app.on('ready_timeout', function(id) {
@@ -121,7 +116,7 @@ serviceLaunch(function() {
 
 You can also set timeout for every task
 
-```
+```js
 ready.mixin(app);
 app.on('ready_timeout', function(id) {
   // this will be called after 1s that `service` task don't complete
