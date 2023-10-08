@@ -1,13 +1,13 @@
-const assert = require('assert');
-const koa = require('koa');
-const spy = require('spy');
-const ready = require('..');
+import { strict as assert } from 'node:assert';
+import { spy } from 'tinyspy';
+import Koa = require('@eggjs/koa');
+import ready from '../src/index.js';
 
 describe('koa', function() {
 
-  let app;
+  let app: any;
   beforeEach(function() {
-    app = koa();
+    app = new Koa.default();
     ready().mixin(app);
   });
 

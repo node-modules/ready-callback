@@ -1,7 +1,7 @@
-const assert = require('assert');
-const EventEmitter = require('events');
-const spy = require('spy');
-const Ready = require('..').Ready;
+import { strict as assert } from 'node:assert';
+import EventEmitter from 'node:events';
+import { spy } from 'tinyspy';
+import { Ready } from '../src/index.js';
 
 function sleep(ms) {
   return new Promise(resolve => {
@@ -106,8 +106,8 @@ describe('Ready', function() {
       setTimeout(function() {
         assert(spyError.callCount === 2);
         assert(spyReady.callCount === 2);
-        assert(spyReady.calls[0].arguments[0].message === 'aaa');
-        assert(spyReady.calls[1].arguments[0].message === 'aaa');
+        assert(spyReady.calls[0][0].message === 'aaa');
+        assert(spyReady.calls[1][0].message === 'aaa');
         done();
       }, 20);
     });
@@ -129,7 +129,7 @@ describe('Ready', function() {
       setTimeout(function() {
         assert(spyError.callCount === 1);
         assert(spyReady.callCount === 1);
-        assert(spyReady.calledWith(err));
+        assert.deepEqual(spyReady.calls[0][0], err);
         done();
       }, 10);
     });
@@ -151,7 +151,7 @@ describe('Ready', function() {
       setTimeout(function() {
         assert(spyError.callCount === 1);
         assert(spyReady.callCount === 1);
-        assert(spyReady.calls[0].arguments[0].message === 'error');
+        assert(spyReady.calls[0][0].message === 'error');
         done();
       }, 20);
     });
@@ -177,12 +177,12 @@ describe('Ready', function() {
   describe('ready stat', function() {
 
     it('should emit ready_stat when every task end', function(done) {
-      const obj = new EventEmitter();
+      const obj:any = new EventEmitter();
       const ready = new Ready();
       ready.mixin(obj);
 
-      const data = [];
-      const timeout = [];
+      const data: {id: string; remain: string[]}[] = [];
+      const timeout: string[] = [];
       obj.on('ready_stat', function(e) {
         data.push(e);
       });
@@ -253,8 +253,8 @@ describe('Ready', function() {
       setTimeout(function() {
         assert(spyReady.callCount === 1);
         assert(spyTimeout.callCount === 2);
-        assert(spyTimeout.calledWith('a'));
-        assert(spyTimeout.calledWith('d'));
+        assert.deepEqual(spyTimeout.calls[0], [ 'a' ]);
+        assert.deepEqual(spyTimeout.calls[1], [ 'd' ]);
         done();
       }, 150);
     });
@@ -282,8 +282,8 @@ describe('Ready', function() {
       setTimeout(function() {
         assert(spyReady.callCount === 1);
         assert(spyTimeout.callCount === 2);
-        assert(spyTimeout.calledWith('a'));
-        assert(spyTimeout.calledWith('c'));
+        assert.deepEqual(spyTimeout.calls[0], [ 'c' ]);
+        assert.deepEqual(spyTimeout.calls[1], [ 'a' ]);
         done();
       }, 150);
     });
@@ -361,7 +361,7 @@ describe('Ready', function() {
       setTimeout(function() {
         assert(spyError.callCount === 1);
         assert(spyReady.callCount === 1);
-        assert(spyReady.calledWith(err));
+        assert.deepEqual(spyReady.calls[0][0], err);
         done();
       }, 20);
     });
@@ -369,7 +369,7 @@ describe('Ready', function() {
 
   describe('error', () => {
     it('should get error in ready', done => {
-      const obj = {};
+      const obj:any = {};
       const ready = new Ready();
       ready.mixin(obj);
 
@@ -382,7 +382,7 @@ describe('Ready', function() {
     });
 
     it('should ready with error after callback error', done => {
-      const obj = {};
+      const obj:any = {};
       const ready = new Ready();
       ready.mixin(obj);
 
@@ -394,27 +394,27 @@ describe('Ready', function() {
       });
     });
 
-    it('should get error object when pass other type in callback', function* () {
-      let err = yield assertErrorType('error');
+    it('should get error object when pass other type in callback', async function() {
+      let err = await assertErrorType('error');
       assert(err.message === 'error');
 
-      err = yield assertErrorType(0);
+      err = await assertErrorType(0);
       assert(err.message === '0');
 
-      err = yield assertErrorType([ '1', '2' ]);
+      err = await assertErrorType([ '1', '2' ]);
       assert(err.message === '1,2');
 
-      err = yield assertErrorType({});
+      err = await assertErrorType({});
       assert(err.message === '[object Object]');
 
-      err = yield assertErrorType(true);
+      err = await assertErrorType(true);
       assert(err.message === 'true');
 
-      err = yield assertErrorType(null);
+      err = await assertErrorType(null);
       assert(err === undefined);
 
       function assertErrorType(value) {
-        const obj = {};
+        const obj:any = {};
         const ready = new Ready();
         ready.mixin(obj);
 
@@ -427,7 +427,7 @@ describe('Ready', function() {
   });
 
   it('should not throw when mixin an object that do not support events', function(done) {
-    const obj = {};
+    const obj:any = {};
     const ready = new Ready();
     ready.mixin(obj);
 
@@ -444,7 +444,7 @@ describe('Ready', function() {
 
     setTimeout(function() {
       assert(spyReady.called === true);
-      assert(spyReady.calledWith(err));
+      assert.deepEqual(spyReady.calls[0][0], err);
       assert(spyError.callCount === 1);
       done();
     }, 10);
@@ -468,17 +468,17 @@ describe('Ready', function() {
   });
 
   describe('lazy start', function() {
-    it('should ready after start manually', function* () {
+    it('should ready after start manually', async function() {
       const obj = new EventEmitter();
       const ready = new Ready({ lazyStart: true });
       const readySpy = spy();
       ready.ready(readySpy);
       ready.mixin(obj);
-      yield sleep(1);
+      await sleep(1);
       assert(readySpy.called === false);
       ready.start();
-      yield sleep(1);
-      assert(readySpy.called === true);
+      await sleep(1);
+      assert(readySpy.called);
     });
   });
 });
