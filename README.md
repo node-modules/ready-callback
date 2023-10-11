@@ -144,3 +144,15 @@ yield sleep(1);
 ## LISENCE
 
 Copyright (c) 2015 popomore. Licensed under the MIT license.
+
+<!-- GITCONTRIBUTOR_START -->
+
+## Contributors
+
+|[<img src="https://avatars.githubusercontent.com/u/360661?v=4" width="100px;"/><br/><sub><b>popomore</b></sub>](https://github.com/popomore)<br/>|[<img src="https://avatars.githubusercontent.com/u/156269?v=4" width="100px;"/><br/><sub><b>fengmk2</b></sub>](https://github.com/fengmk2)<br/>|[<img src="https://avatars.githubusercontent.com/u/32174276?v=4" width="100px;"/><br/><sub><b>semantic-release-bot</b></sub>](https://github.com/semantic-release-bot)<br/>|[<img src="https://avatars.githubusercontent.com/u/14790466?v=4" width="100px;"/><br/><sub><b>greenkeeperio-bot</b></sub>](https://github.com/greenkeeperio-bot)<br/>|[<img src="https://avatars.githubusercontent.com/u/6897780?v=4" width="100px;"/><br/><sub><b>killagu</b></sub>](https://github.com/killagu)<br/>|[<img src="https://avatars.githubusercontent.com/u/13450124?v=4" width="100px;"/><br/><sub><b>liuhanqu</b></sub>](https://github.com/liuhanqu)<br/>|
+| :---: | :---: | :---: | :---: | :---: | :---: |
+
+
+This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto updated at `Wed Oct 11 2023 10:27:33 GMT+0800`.
+
+<!-- GITCONTRIBUTOR_END -->
