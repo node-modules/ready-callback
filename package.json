@@ -23,7 +23,7 @@
     "@types/once": "^1.4.1",
     "egg-bin": "^6.5.2",
     "eslint": "^8.51.0",
-    "eslint-config-egg": "^12.3.1",
+    "eslint-config-egg": "^13.0.0",
     "git-contributor": "^2.1.5",
     "mocha": "^10.2.0",
     "tinyspy": "^2.2.0",
