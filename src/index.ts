@@ -2,8 +2,7 @@ import EventEmitter from 'node:events';
 import { debuglog } from 'node:util';
 import { randomUUID } from 'node:crypto';
 import once from 'once';
-import ReadyObject = require('get-ready');
-import { type ReadyFunctionArg } from 'get-ready';
+import { Ready as ReadyObject, type ReadyFunctionArg } from 'get-ready';
 
 const debug = debuglog('ready-callback');
 
@@ -42,7 +41,7 @@ class Ready extends EventEmitter {
 
   constructor(opt: ReadyOption = {}) {
     super();
-    ReadyObject.default.mixin(this);
+    ReadyObject.mixin(this);
 
     this.opt = opt;
 
